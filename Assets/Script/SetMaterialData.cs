@@ -5,17 +5,38 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class SetMaterialData : MonoBehaviour
 {
-    public Material mat;
-    // Start is called before the first frame update
+    public Material stencil_mat;
+    public Material standard_mat;
+
+    private MeshRenderer mesh;
+    private bool is_stencil = true;
+
     void Start()
     {
-        
+        TryGetComponent<MeshRenderer>(out mesh);
     }
 
-    // Update is called once per frame
+
     void Update()
     {
-        if (!mat) return;
-        mat.SetFloat("_Stencil", 125 - transform.position.z);
+        if (!stencil_mat) return;
+        if(is_stencil)
+            stencil_mat.SetFloat("_Stencil", 125 - transform.position.z);
+    }
+
+    public void SetStencilMat()
+    {
+        if (!mesh) return;
+        if (!stencil_mat) return;
+        mesh.material = stencil_mat;
+        is_stencil = true;
+    }
+
+    public void SetStandardMat()
+    {
+        if (!mesh) return;
+        if (!standard_mat) return;
+        mesh.material = standard_mat;
+        is_stencil = false;
     }
 }
