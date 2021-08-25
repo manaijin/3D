@@ -17,7 +17,6 @@ Shader "3D/Depth2Stencil"
         }
 
         ZTest Off
-
         Pass
         {
             CGPROGRAM
@@ -26,6 +25,7 @@ Shader "3D/Depth2Stencil"
             float4 _MainTex_ST;
             fixed4 _Diffuse;
             sampler2D _MainTex;
+            float _Stencil;
 
             struct v2f
             {
