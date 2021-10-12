@@ -5,11 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 
 /// <summary>
-/// 八叉树
+/// 八叉树节点
 /// </summary>
-class OcTree
+class OcTreeNode
 {
 
 }
 
-
+public interface IOcTreeNode 
+{
+    public Bounds 
+}
