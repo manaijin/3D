@@ -12,7 +12,12 @@ class OcTreeNode
 
 }
 
-public interface IOcTreeNode 
+public interface IOcTreeNode
 {
-    public Bounds 
+    // Property declaration:
+    public Bounds bounds
+    {
+        get;
+        set;
+    }
 }
