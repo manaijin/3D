@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Numerics;
+using System.Text;
 
 /// <summary>
 /// 八叉树节点
 /// </summary>
-class OcTreeNode<T> : IOcTreeNode<T> where T : IOcObject
+public class OcTreeNode<T> : IOcTreeNode<T> where T : IOcObject
 {
     /// <summary>
     /// 空间区域
@@ -25,8 +27,13 @@ class OcTreeNode<T> : IOcTreeNode<T> where T : IOcObject
     }
     private OcTreeNode<T>[] childNode;
 
+    public int maxNum = -1;
+    public Vector3 minSize = new Vector3(-1, -1, -1);
+
     // 对象列表
     private List<T> objectContainer;
+
+    public OcTreeNode() { }
 
     public OcTreeNode(Bounds b)
     {
@@ -45,10 +52,10 @@ class OcTreeNode<T> : IOcTreeNode<T> where T : IOcObject
     public void InsertObject(T obj)
     {
         if (!obj.InSideTreeNode(this)) return;
-
+        if (ChildNode == null) return;
         foreach (var node in ChildNode)
         {
-            if (obj.InSideTreeNode(this))
+            if (obj.InSideTreeNode(node))
             {
                 node.InsertObject(obj);
                 return;
@@ -60,9 +67,9 @@ class OcTreeNode<T> : IOcTreeNode<T> where T : IOcObject
 
     public void GenerateChildNode()
     {
-        // TODO:对象池处理对象创建
+        // TODO:对象池处理对象创建        
+        if (!Bounds.Split(out var childBounds)) return;
         childNode = new OcTreeNode<T>[8];
-        var childBounds = Bounds.Split();
         for (int i = 0; i < 8; i++)
         {
             childNode[i] = new OcTreeNode<T>(childBounds[i]);
@@ -81,5 +88,24 @@ class OcTreeNode<T> : IOcTreeNode<T> where T : IOcObject
                 node.InsertObject(obj);
             }
         }
+    }
+
+    public void GetAllNode(ref List<OcTreeNode<T>> result) {
+        result.Add(this);
+        if(ChildNode != null)
+            result.AddRange(ChildNode);
+    }
+
+    public override string ToString() {
+        StringBuilder sb = new StringBuilder();
+        sb.Append("范围:");
+        sb.Append(Bounds.ToString());
+        sb.Append("\n");
+        for (int i = 0; i < objectContainer.Count; i++) {
+            sb.Append("\t场景对象：");
+            sb.Append(objectContainer[i].Position.ToString());
+            sb.Append("\n");
+        }
+        return sb.ToString();
     }
 }

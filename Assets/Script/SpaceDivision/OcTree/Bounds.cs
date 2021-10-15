@@ -39,6 +39,22 @@ public struct Bounds
         this.zRange = zRange;
     }
 
+    public Bounds(float xMin, float xMax, float yMin, float yMax, float zMin, float zMax) {
+        position = new Vector3(xMin + xMax, yMin + yMax, zMin + zMax) / 2;
+
+        xSize = xMax - xMin;
+        ySize = yMax - yMin;
+        zSize = zMax - zMin;
+
+        dX = xSize / 2;
+        dY = ySize / 2;
+        dZ = zSize / 2;
+
+        xRange = new Vector2(xMin, xMax);
+        yRange = new Vector2(yMin, yMax); 
+        zRange = new Vector2(zMin, zMax); 
+    }
+
     // 包围盒位置：中心
     public Vector3 Position
     {
@@ -170,9 +186,14 @@ public struct Bounds
     /// <summary>
     /// 八等分包围盒
     /// </summary>
-    /// <returns></returns>
-    public Bounds[] Split() {
-        var result = new Bounds[8];
+    /// <param name="result"></param>
+    /// <returns>是否切分成功</returns>
+    public bool Split(out Bounds[] result) {
+        result = new Bounds[8];
+        // TODO:处理无限切割问题
+        if (xSize <= 0 && ySize <= 0 && zSize <= 0) 
+            return false;
+        
         float newXSize = xSize / 2;
         float newYSize = ySize / 2;
         float newZSize = zSize / 2;
@@ -201,6 +222,6 @@ public struct Bounds
         pos = position + new Vector3(dX, dY, dZ) / 2;
         result[7] = new Bounds(pos, newXSize, newYSize, newZSize);
 
-        return result;
+        return true;
     }
 }

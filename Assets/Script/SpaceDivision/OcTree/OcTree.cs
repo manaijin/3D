@@ -26,6 +26,17 @@ class OcTree<T> : IOcTree<T> where T: IOcObject
         rootNode.FindRelatedObjects(obj, ref result);
         return result;
     }
+
+    public List<OcTreeNode<T>> GetAllNode() {
+        List<OcTreeNode<T>> result = new List<OcTreeNode<T>>();
+        rootNode.GetAllNode(ref result);
+        return result;
+    }
+
+    public void Splite(T[] objs)
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 

@@ -481,9 +481,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc888f83ebf86fc4784461fae3513b91, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xSize: {x: -10, y: 10}
-  ySize: {x: -10, y: 10}
-  zSize: {x: -10, y: 10}
+  xRange: {x: -10, y: 10}
+  yRange: {x: -10, y: 10}
+  zRange: {x: -10, y: 10}
   itemNum: 100
 --- !u!4 &583575042
 Transform:

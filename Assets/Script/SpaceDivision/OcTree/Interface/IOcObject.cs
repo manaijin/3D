@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿using System.Numerics;
 /// <summary>
 /// 八叉树场景空间对象
 /// </summary>
-interface IOcObject
+public interface IOcObject
 {
+    public Vector3 Position { get; set; }
+
     /// <summary>
     /// 是否处于树节点空间内部
     /// </summary>

@@ -17,4 +17,10 @@ interface IOcTree<T> where T : IOcObject
     /// </summary>
     /// <param name="obj"></param>
     public List<T> FindRelatedObjects(T obj);
+
+    /// <summary>
+    /// 初始化划分空间
+    /// </summary>
+    /// <param name="objs"></param>
+    public void Splite(T[] objs);
 }

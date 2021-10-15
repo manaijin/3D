@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-/// <summary>
+﻿/// <summary>
 /// 八叉树包围盒对象
 /// </summary>
-class OcBoxObject : OcPointObject
+public class OcBoxObject : OcPointObject
 {
-    public Bounds Bounds { get; set; }
+    public OcBoxObject(Bounds bounds)
+    {
+        this.bounds = bounds;
+        position = bounds.Position;
+    }
+
+    public Bounds Bounds {
+        get => bounds;
+    }
+    public Bounds bounds;
 
     public override bool InSideTreeNode<T>(OcTreeNode<T> ocTreeNode)
     {
