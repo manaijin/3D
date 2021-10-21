@@ -484,7 +484,7 @@ MonoBehaviour:
   xRange: {x: -10, y: 10}
   yRange: {x: -10, y: 10}
   zRange: {x: -10, y: 10}
-  itemNum: 100
+  itemNum: 10
 --- !u!4 &583575042
 Transform:
   m_ObjectHideFlags: 0

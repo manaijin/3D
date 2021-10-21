@@ -12,7 +12,7 @@ public interface IOcObject
     /// <typeparam name="T"></typeparam>
     /// <param name="ocTreeNode">树节点</param>
     /// <returns></returns>
-    public bool InSideTreeNode<T>(OcTreeNode<T> ocTreeNode) where T : IOcObject;
+    public bool InSideTreeNode<T>(IOcTreeNode<T> ocTreeNode) where T : IOcObject;
 
     /// <summary>
     /// 是否与空间节点相交
@@ -20,5 +20,5 @@ public interface IOcObject
     /// <typeparam name="T"></typeparam>
     /// <param name="ocTreeNode">树节点</param>
     /// <returns></returns>
-    public bool IntersectTreeNodee<T>(OcTreeNode<T> ocTreeNode) where T : IOcObject;
+    public bool IntersectTreeNodee<T>(IOcTreeNode<T> ocTreeNode) where T : IOcObject;
 }

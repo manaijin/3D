@@ -14,7 +14,7 @@ public class SpaceDivision_GenerateItem : MonoBehaviour
 
     private GameObject root;
 
-    private OcTree<OcPointObject> tree;
+    private OcTreePoint<OcPointObject> tree;
     private OcPointObject[] points;
 
 
@@ -36,7 +36,7 @@ public class SpaceDivision_GenerateItem : MonoBehaviour
         var list = Enum.GetValues(typeof(PrimitiveType));
         int length = list.Length;
         int t = UnityEngine.Random.Range(0, length);
-        Transform go = GameObject.CreatePrimitive((PrimitiveType)t).transform;
+        Transform go = GameObject.CreatePrimitive(PrimitiveType.Sphere).transform;
         go.name = i.ToString();
 
         float x = UnityEngine.Random.Range(xRange.x, xRange.y);
@@ -55,28 +55,36 @@ public class SpaceDivision_GenerateItem : MonoBehaviour
     void CreateOcTree()
     {
         if (points == null) return;
-        tree = new OcTree<OcPointObject>(new Bounds(xRange.x, xRange.y, yRange.x, yRange.y, zRange.x, zRange.y));
+        tree = new OcTreePoint<OcPointObject>(new Bounds(xRange.x, xRange.y, yRange.x, yRange.y, zRange.x, zRange.y));
         OcPointObject item;
         for (int i = 0; i < points.Length; i++)
         {
             item = points[i];
-            tree.InsertObject(item);
+            tree.AddObject(item);
         }
     }
 
     private float m_t = 0;
     private int index = 0;
     private float duration = 2.0f;
+    private Color baseColor = new Color(1f, 0f, 0f, 0.5f);
     private void OnDrawGizmos()
     {
         if (tree == null) return;
         var nodes = tree.GetAllNode();
-        var color = new Color(0.1f, 0.1f, 0.1f) * (index + 1);
+        // 全局
+        foreach (var node in nodes) {
+            DrawBounds(node.Bounds, new Color(0.5f, 0.5f, 0.5f, 0.5f));                
+        }
 
-        DrawBounds(nodes[index].Bounds, color);
+        // 局部
+        int length = nodes.Count;
+        while (nodes[index].ObjectContainer.Count == 0) {
+            index = index < length - 1 ? index + 1 : 0;
+        }            
+        DrawBounds(nodes[index].Bounds, baseColor);
         m_t += Time.deltaTime;
-        if (m_t <= duration) return;
-        int length = nodes.Count;        
+        if (m_t <= duration) return;               
         index = index < length - 1 ? index + 1 : 0;
         m_t = 0;
     }
@@ -84,8 +92,8 @@ public class SpaceDivision_GenerateItem : MonoBehaviour
     private void DrawBounds(Bounds bounds, Color color)
     {
         var pos = bounds.Position;
-        Gizmos.DrawCube(new Vector3(pos.X, pos.Y, pos.Z), new Vector3(bounds.XSize, bounds.YSize, bounds.ZSize));
         Gizmos.color = color;
+        Gizmos.DrawCube(new Vector3(pos.X, pos.Y, pos.Z), new Vector3(bounds.XSize, bounds.YSize, bounds.ZSize));        
     }
 
     void PrintNode() {

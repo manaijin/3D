@@ -14,12 +14,12 @@ public class OcBoxObject : OcPointObject
     }
     public Bounds bounds;
 
-    public override bool InSideTreeNode<T>(OcTreeNode<T> ocTreeNode)
+    public override bool InSideTreeNode<T>(OcTreePointNode<T> ocTreeNode)
     {
         return ocTreeNode.Bounds.Contain(Bounds);
     }
 
-    public override bool IntersectTreeNodee<T>(OcTreeNode<T> ocTreeNode) 
+    public override bool IntersectTreeNodee<T>(OcTreePointNode<T> ocTreeNode) 
     {
         return ocTreeNode.Bounds.Intersects(Bounds);
     }
