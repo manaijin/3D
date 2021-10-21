@@ -25,13 +25,13 @@ public class OcPointObject : IOcObject
         position = new Vector3(x, y, z);
     }
 
-    public virtual bool InSideTreeNode<T>(OcTreePointNode<T> ocTreeNode) where T : IOcObject
+    public virtual bool InSideTreeNode<T>(IOcTreeNode<T> ocTreeNode) where T : IOcObject
     {
-        return ocTreeNode.Bounds.Contain(position);
+        return (ocTreeNode as OcTreeBaseNode<T>).Bounds.Contain(position);
     }
 
-    public virtual bool IntersectTreeNodee<T>(OcTreePointNode<T> ocTreeNode) where T : IOcObject
+    public virtual bool IntersectTreeNodee<T>(IOcTreeNode<T> ocTreeNode) where T : IOcObject
     {
-        return ocTreeNode.Bounds.Contain(position);
+        return (ocTreeNode as OcTreeBaseNode<T>).Bounds.Contain(position);
     }
 }
