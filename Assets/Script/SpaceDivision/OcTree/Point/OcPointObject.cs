@@ -27,11 +27,11 @@ public class OcPointObject : IOcObject
 
     public virtual bool InSideTreeNode<T>(IOcTreeNode<T> ocTreeNode) where T : IOcObject
     {
-        return (ocTreeNode as OcTreeBaseNode<T>).Bounds.Contain(position);
+        return ocTreeNode.Bounds.Contain(position);
     }
 
     public virtual bool IntersectTreeNodee<T>(IOcTreeNode<T> ocTreeNode) where T : IOcObject
     {
-        return (ocTreeNode as OcTreeBaseNode<T>).Bounds.Contain(position);
+        return ocTreeNode.Bounds.Contain(position);
     }
 }

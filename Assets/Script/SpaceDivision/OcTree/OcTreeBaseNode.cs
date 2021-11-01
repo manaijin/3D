@@ -7,11 +7,6 @@ using System.Threading.Tasks;
 public abstract class OcTreeBaseNode<T> : IOcTreeNode<T> where T : IOcObject
 {
     /// <summary>
-    /// 空间区域
-    /// </summary>
-    public Bounds Bounds { get; set; }
-
-    /// <summary>
     /// 空间子节点
     /// </summary>
     protected OcTreePointNode<T>[] childNode;
@@ -28,7 +23,7 @@ public abstract class OcTreeBaseNode<T> : IOcTreeNode<T> where T : IOcObject
     public virtual void GenerateChildNode()
     {
         // 划分子节点
-        if (!Bounds.Split(out var childBounds)) return;
+        if (!this.Bounds.Split(out var childBounds)) return;
 
         childNode = new OcTreePointNode<T>[8];
         for (int i = 0; i < 8; i++)
@@ -78,6 +73,9 @@ public abstract class OcTreeBaseNode<T> : IOcTreeNode<T> where T : IOcObject
 
     private string s1 = "范围:";
     private string s2 = "\t场景对象：";
+
+    public Bounds Bounds { get ; set ; }
+
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder(16);

@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 public interface IOcTreeNode<T> where T : IOcObject
 {
     /// <summary>
+    /// 空间区域
+    /// </summary>
+    public Bounds Bounds { get; set; }
+
+    /// <summary>
     /// 添加空间对象
     /// </summary>
     /// <param name="obj">空间对象</param>

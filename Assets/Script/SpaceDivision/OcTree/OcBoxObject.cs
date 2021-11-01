@@ -16,11 +16,11 @@ public class OcBoxObject : OcPointObject
 
     public override bool InSideTreeNode<T>(IOcTreeNode<T> ocTreeNode)
     {
-        return (ocTreeNode as OcTreePointNode<T>).Bounds.Contain(Bounds);
+        return ocTreeNode.Bounds.Contain(Bounds);
     }
 
     public override bool IntersectTreeNodee<T>(IOcTreeNode<T> ocTreeNode) 
     {
-        return (ocTreeNode as OcTreePointNode<T>).Bounds.Intersects(Bounds);
+        return ocTreeNode.Bounds.Intersects(Bounds);
     }
 }
