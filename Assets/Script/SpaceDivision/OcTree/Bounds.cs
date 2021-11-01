@@ -188,11 +188,13 @@ public struct Bounds
     /// <param name="result"></param>
     /// <returns>是否切分成功</returns>
     public bool Split(out Bounds[] result) {
-        result = new Bounds[8];
+        result = null;
         // TODO:处理无限切割问题
         if (xSize <= 0 && ySize <= 0 && zSize <= 0) 
             return false;
-        
+
+        result = new Bounds[8];
+
         float newXSize = xSize / 2;
         float newYSize = ySize / 2;
         float newZSize = zSize / 2;

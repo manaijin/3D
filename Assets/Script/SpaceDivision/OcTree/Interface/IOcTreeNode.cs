@@ -4,6 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+/// <summary>
+/// 八叉树空间节点接口
+/// </summary>
+/// <typeparam name="T"></typeparam>
 public interface IOcTreeNode<T> where T : IOcObject
 {
     /// <summary>

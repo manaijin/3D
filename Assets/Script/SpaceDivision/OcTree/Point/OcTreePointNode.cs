@@ -12,9 +12,6 @@ public class OcTreePointNode<T> : OcTreeBaseNode<T> where T : IOcObject
     // 最小尺寸
     //public Vector3 MinSize = new Vector3(-1, -1, -1);
 
-    // 最大数量
-    public int MaxNum = 2;
-
     public OcTreePointNode() { }
 
     public OcTreePointNode(Bounds b)
@@ -31,20 +28,25 @@ public class OcTreePointNode<T> : OcTreeBaseNode<T> where T : IOcObject
         }
     }
 
+    private bool isInitChild = false;
     public override void AddObject(T obj)
     {
         if (!obj.InSideTreeNode(this)) return;
-        if (childNode == null && ObjectContainer.Count < MaxNum)
+        if (childNode == null && ObjectContainer.Count < LimitNum)
         {
             ObjectContainer.Add(obj);
         }
         else
         {
-            if (childNode == null)
+            // 初始化叶子节点
+            if (childNode == null && !isInitChild)
             {
                 GenerateChildNode();
+                isInitChild = true;
             }
-
+            // 初始化失败
+            if (childNode == null) return;
+            // 将对象加入到叶子节点中
             foreach (var node in childNode)
             {
                 if (obj.InSideTreeNode(node))
