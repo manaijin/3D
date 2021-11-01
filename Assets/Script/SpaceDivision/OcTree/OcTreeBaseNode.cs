@@ -39,7 +39,7 @@ public abstract class OcTreeBaseNode<T> : IOcTreeNode<T> where T : IOcObject
     /// 空间小尺寸（每个维度单独判断）
     /// 若单个维度小于等于0，则不判断
     /// </summary>
-    public Vector3 MinSize = new Vector3(10, 10, 10);
+    public Vector3 MinSize = Vector3.Zero;
 
     public abstract void AddObject(T obj);
 
@@ -134,7 +134,6 @@ public abstract class OcTreeBaseNode<T> : IOcTreeNode<T> where T : IOcObject
     public override string ToString()
     {
         StringBuilder sb = new StringBuilder(16);
-        sb.Append(s1);
         sb.Append(Bounds.ToString());
         sb.Append("\n");
         for (int i = 0; i < ObjectContainer.Count; i++)

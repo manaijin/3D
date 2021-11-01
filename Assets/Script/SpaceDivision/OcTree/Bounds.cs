@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Text;
 
 /// <summary>
 /// AABB包围盒
@@ -224,5 +225,19 @@ public struct Bounds
         result[7] = new Bounds(pos, newXSize, newYSize, newZSize);
 
         return true;
+    }
+
+    private static readonly string s1 = "范围:";
+    public override string ToString() {
+        var sb = new StringBuilder();
+        sb.Append(s1);
+        sb.Append("[");
+        sb.Append(XRange.ToString());
+        sb.Append(",");
+        sb.Append(YRange.ToString());
+        sb.Append(",");
+        sb.Append(ZRange.ToString());
+        sb.Append("]");
+        return sb.ToString();
     }
 }
