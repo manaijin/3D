@@ -126,8 +126,7 @@ public abstract class OcTreeBaseNode<T> : IOcTreeNode<T> where T : IOcObject
         return false;
     }
 
-    private string s1 = "范围:";
-    private string s2 = "\t场景对象：";
+    private static readonly string s2 = "\t场景对象：";
 
     public Bounds Bounds { get; set; }
 
