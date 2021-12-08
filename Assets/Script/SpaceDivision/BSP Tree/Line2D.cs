@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-public class Line2D
+public class Line2D : IBSPNode
 {
     public Vector2 startPoint;
     public Vector2 endPoint;
@@ -12,13 +12,20 @@ public class Line2D
     /// <param name="line2"></param>
     /// <returns></returns>
     public static bool IsLineCross(Line2D line1, Line2D line2) 
-    {        
-        return IsPointsCrossLine(line1, line2) && IsPointsCrossLine(line2, line1);
+    {
+        return IsPointsCrossLine(line1, line2.startPoint, line2.endPoint) && IsPointsCrossLine(line2, line1.startPoint, line1.endPoint) ;
     }
 
-    private static bool IsPointsCrossLine(Line2D line1, Line2D line2) {
-        var r1 = line1.PointSide(line2.startPoint);
-        var r2 = line1.PointSide(line2.endPoint);
+    /// <summary>
+    /// 判断平面两点是否在直线两侧
+    /// </summary>
+    /// <param name="line"></param>
+    /// <param name="point1"></param>
+    /// <param name="point2"></param>
+    /// <returns></returns>
+    private static bool IsPointsCrossLine(Line2D line, Vector2 point1, Vector2 point2) {
+        var r1 = line.PointSide(point1);
+        var r2 = line.PointSide(point2);
         return r1 + r2 == 0 && r1 != 0;
     }
 

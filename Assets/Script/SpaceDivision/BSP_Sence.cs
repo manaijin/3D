@@ -34,22 +34,6 @@ public class BSP_Sence : MonoBehaviour
         PrintLines();
     }
 
-    void Update()
-    {
-        //if (lines == null) return;
-        //foreach (Line2D line in lines)
-        //{
-        //    var strat = line.startPoint;
-        //    var end = line.endPoint;
-        //    Debug.DrawLine(new UnityEngine.Vector3(strat.X, strat.Y), new UnityEngine.Vector3(end.X, end.Y), Color.black);
-        //}
-        //// 边框
-        //Debug.DrawLine(ViewPoint[0], ViewPoint[1], Color.white);
-        //Debug.DrawLine(ViewPoint[1], ViewPoint[2], Color.white);
-        //Debug.DrawLine(ViewPoint[2], ViewPoint[3], Color.white);
-        //Debug.DrawLine(ViewPoint[3], ViewPoint[0], Color.white);
-    }
-
     void OnRenderObject()
     {
         if (lines == null) return;
@@ -91,28 +75,37 @@ public class BSP_Sence : MonoBehaviour
         }
     }
 
-    private UnityEngine.Vector3 off = new UnityEngine.Vector3(0.01f, 0.01f, 0.01f);
     void DrawLine(UnityEngine.Vector3 start, UnityEngine.Vector3 end, Color c)
     {
-        GL.Color(c);
-        // gl接口绘制有间隙，多重绘制增加宽度
-        for (int i = 0; i < 2; i++)
-        {
-            GL.Vertex(start + i * off);
-            GL.Vertex(end + i * off);
-        }
+        DrawLine(start.x, start.y, end.x, end.y, c);
     }
 
     void DrawLine(float startX, float startY, float endX, float endY, Color c)
     {
         GL.Color(c);
+        var v = GetVerticalVector(endX - startX, endY - startY);
+        v = v.normalized * 0.005f;
         // gl接口绘制有间隙，多重绘制增加宽度
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < 4; i++)
         {
-            GL.Vertex3(startX + i * off.x, startY + i * off.y, 0);
-            GL.Vertex3(endX + i * off.x, endY + i * off.y, 0);
+            GL.Vertex3(startX + i * v.x, startY + i * v.y, 0);
+            GL.Vertex3(endX + i * v.x, endY + i * v.y, 0);
         }
     }
+
+    /// <summary>
+    /// 获取二维垂直向量
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <returns></returns>
+    UnityEngine.Vector2 GetVerticalVector(float x, float y)
+    {
+        float vX = y / (x - y);
+        float vY = 1 - vX;
+        return new UnityEngine.Vector2(vX, vY);
+    }
+
 
     /// <summary>
     /// 生成空间分割线段（不能交叉）
