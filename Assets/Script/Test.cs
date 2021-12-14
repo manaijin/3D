@@ -6,20 +6,30 @@ using UnityEngine.UI;
 
 public class Test : MonoBehaviour
 {
-    public Transform t1;
-    public Transform t2;
     // Start is called before the first frame update
     void Start()
     {
-        t1.position = new Vector3(10, 0, 0);
-        t2.position = new Vector3(0, 0, 0);
-        t1.RotateAround(t2.position, Vector3.up, 90);
-        Debug.Log(t1.position);
+        StartCoroutine(CreateSphere());
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    IEnumerator CreateSphere() {
+        float r = 10f;
+
+        int splitNum = 50;
+        float d = Mathf.PI / splitNum;
+        for (int i = 0; i <= splitNum; i++)
+        {
+            float sth = d * i;
+            float x = r * Mathf.Cos(3 * sth) * Mathf.Cos(sth);
+            float y = r * Mathf.Cos(3 * sth) * Mathf.Sin(sth);
+            var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            go.transform.position = new Vector3(x, y, 0);
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
