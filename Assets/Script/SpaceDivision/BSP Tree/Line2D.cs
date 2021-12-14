@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-public class Line2D : IBSPNode
+public class Line2D
 {
     public Vector2 startPoint;
     public Vector2 endPoint;

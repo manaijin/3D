@@ -16,7 +16,7 @@ public class BSP_Sence : MonoBehaviour
     public UnityEngine.Vector2 xRange = new UnityEngine.Vector2(-10, 10);
     public UnityEngine.Vector2 yRange = new UnityEngine.Vector2(-10, 10);
 
-    [Tooltip("画线材质")]
+    [Tooltip("画线材质，默认创建")]
     public Material lineMaterial;
 
     private List<Line2D> lines;
@@ -66,12 +66,14 @@ public class BSP_Sence : MonoBehaviour
         if (!lineMaterial)
         {
             Shader shader = Shader.Find("Hidden/Internal-Colored");
-            lineMaterial = new Material(shader);
-            lineMaterial.hideFlags = HideFlags.HideAndDontSave;
+            lineMaterial = new Material(shader)
+            {
+                hideFlags = HideFlags.HideAndDontSave
+            };
             lineMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
             lineMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
             lineMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
-            lineMaterial.SetInt("_ZWrite", 1);
+            lineMaterial.SetInt("_ZWrite", 0);
         }
     }
 
