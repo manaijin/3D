@@ -13,14 +13,19 @@ public class BSP_Sence : MonoBehaviour
     [Range(4, 50)]
     public int pointNum = 5;
 
+    // 顶点范围
     public UnityEngine.Vector2 xRange = new UnityEngine.Vector2(-10, 10);
     public UnityEngine.Vector2 yRange = new UnityEngine.Vector2(-10, 10);
 
     [Tooltip("画线材质，默认创建")]
     public Material lineMaterial;
 
+    // 随机线段
     private List<Line2D> lines;
+    // 视图四个顶点
     private UnityEngine.Vector3[] ViewPoint;
+
+    private BSPTree tree;
 
     void Start()
     {
@@ -30,36 +35,52 @@ public class BSP_Sence : MonoBehaviour
         ViewPoint[2] = new UnityEngine.Vector3(xRange.y, yRange.y);
         ViewPoint[3] = new UnityEngine.Vector3(xRange.y, yRange.x);
         CreateLineMaterial();
+
         GenerateLines();
         PrintLines();
+
+        tree = new BSPTree();
+        var lines2 = new List<Line2D>();
+        foreach (var item in lines)
+        {
+            lines2.Add(item.Clone() as Line2D);
+        }
+        tree.CreateTree(lines2);
+        print(tree.ToString());
     }
 
     void OnRenderObject()
     {
         if (lines == null) return;
         if (!lineMaterial) return;
-        GL.PushMatrix();
-
         lineMaterial.SetPass(0);
+        GL.PushMatrix();
         GL.Begin(GL.LINES);
-        // 线段
+
+        // BSP树
+        tree.ENode(tree.RootNode, (BSPNode<Line2D> node) =>
+        {
+            var strat = node.data.startPoint;
+            var end = node.data.endPoint;
+            Helper.DrawLine(strat.X, strat.Y, end.X, end.Y, Color.red);
+        });
+
+        // 原始数据
         foreach (Line2D line in lines)
         {
             var strat = line.startPoint;
             var end = line.endPoint;
-            DrawLine(strat.X, strat.Y, end.X, end.Y, Color.black);
+            Helper.DrawLine(strat.X, strat.Y, end.X, end.Y, Color.black);
         }
 
         // 边框        
-        DrawLine(ViewPoint[0], ViewPoint[1], Color.white);
-        DrawLine(ViewPoint[1], ViewPoint[2], Color.white);
-        DrawLine(ViewPoint[2], ViewPoint[3], Color.white);
-        DrawLine(ViewPoint[3], ViewPoint[0], Color.white);
+        Helper.DrawLine(ViewPoint[0], ViewPoint[1], Color.white);
+        Helper.DrawLine(ViewPoint[1], ViewPoint[2], Color.white);
+        Helper.DrawLine(ViewPoint[2], ViewPoint[3], Color.white);
+        Helper.DrawLine(ViewPoint[3], ViewPoint[0], Color.white);
         GL.End();
-
         GL.PopMatrix();
     }
-
 
     public void CreateLineMaterial()
     {
@@ -75,37 +96,6 @@ public class BSP_Sence : MonoBehaviour
             lineMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
             lineMaterial.SetInt("_ZWrite", 0);
         }
-    }
-
-    void DrawLine(UnityEngine.Vector3 start, UnityEngine.Vector3 end, Color c)
-    {
-        DrawLine(start.x, start.y, end.x, end.y, c);
-    }
-
-    void DrawLine(float startX, float startY, float endX, float endY, Color c)
-    {
-        GL.Color(c);
-        var v = GetVerticalVector(endX - startX, endY - startY);
-        v = v.normalized * 0.005f;
-        // gl接口绘制有间隙，多重绘制增加宽度
-        for (int i = 0; i < 4; i++)
-        {
-            GL.Vertex3(startX + i * v.x, startY + i * v.y, 0);
-            GL.Vertex3(endX + i * v.x, endY + i * v.y, 0);
-        }
-    }
-
-    /// <summary>
-    /// 获取二维垂直向量
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
-    UnityEngine.Vector2 GetVerticalVector(float x, float y)
-    {
-        float vX = y / (x - y);
-        float vY = 1 - vX;
-        return new UnityEngine.Vector2(vX, vY);
     }
 
 

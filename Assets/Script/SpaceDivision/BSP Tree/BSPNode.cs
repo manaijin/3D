@@ -8,4 +8,15 @@ public class BSPNode<T> : IBSPNode
 {
     public BSPNode<T> LeftNode;
     public BSPNode<T> RightNode;
+    public T data;
+
+    public BSPNode(T node)
+    {
+        data = node;
+    }
+
+    public override string ToString()
+    {
+        return data.ToString();
+    }
 }
