@@ -6,30 +6,24 @@ using UnityEngine.UI;
 
 public class Test : MonoBehaviour
 {
+    public SkinnedMeshRenderer sk;
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(CreateSphere());
+        if (!sk) return;
+        GameObject go = new GameObject("Bake");
+        var f = go.AddComponent<MeshFilter>();
+        var r = go.AddComponent<MeshRenderer>();
+        go.transform.position = transform.position;
+        Mesh m = new Mesh();
+        sk.BakeMesh(m);
+        f.mesh = m;
+        r.materials = sk.materials;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-    }
-    IEnumerator CreateSphere() {
-        float r = 10f;
-
-        int splitNum = 50;
-        float d = Mathf.PI / splitNum;
-        for (int i = 0; i <= splitNum; i++)
-        {
-            float sth = d * i;
-            float x = r * Mathf.Cos(3 * sth) * Mathf.Cos(sth);
-            float y = r * Mathf.Cos(3 * sth) * Mathf.Sin(sth);
-            var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            go.transform.position = new Vector3(x, y, 0);
-            yield return new WaitForSeconds(0.1f);
-        }
     }
 }

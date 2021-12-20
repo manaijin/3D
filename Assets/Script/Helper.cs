@@ -4,6 +4,21 @@ using UnityEngine;
 
 public static class Helper
 {
+
+    public static Material CreateLineMaterial() {
+
+        Shader shader = Shader.Find("Hidden/Internal-Colored");
+        var m = new Material(shader)
+        {
+            hideFlags = HideFlags.HideAndDontSave
+        };
+        m.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+        m.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+        m.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
+        m.SetInt("_ZWrite", 0);
+        return m;
+    }
+
     /// <summary>
     /// 画线（原点为屏幕中心）
     /// </summary>

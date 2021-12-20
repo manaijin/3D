@@ -86,18 +86,9 @@ public class BSP_Sence : MonoBehaviour
     {
         if (!lineMaterial)
         {
-            Shader shader = Shader.Find("Hidden/Internal-Colored");
-            lineMaterial = new Material(shader)
-            {
-                hideFlags = HideFlags.HideAndDontSave
-            };
-            lineMaterial.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            lineMaterial.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            lineMaterial.SetInt("_Cull", (int)UnityEngine.Rendering.CullMode.Off);
-            lineMaterial.SetInt("_ZWrite", 0);
+            lineMaterial = Helper.CreateLineMaterial();
         }
     }
-
 
     /// <summary>
     /// 生成空间分割线段（不能交叉）
