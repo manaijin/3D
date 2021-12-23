@@ -47,7 +47,8 @@ public class GLAPI : MonoBehaviour
     {
         lineMaterial.SetPass(0);        
         GL.PushMatrix();
-        GL.LoadPixelMatrix();        
+        GL.LoadPixelMatrix();
+        //GL.LoadPixelMatrix(0, Screen.width, Screen.height, 0);
         GL.Begin(GL.LINES);
         GL.Color(Color.black);
         GL.Vertex3(Screen.width / 2, 0, 0);
