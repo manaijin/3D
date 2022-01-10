@@ -566,7 +566,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -2373,10 +2373,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d444cc8fa1b1ad4db51149631f1df51, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  imgs:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  texture: {fileID: 2800000, guid: 44a17a5b205fcd349a24700e6f5615bd, type: 3}
+  shaders:
+  - {fileID: 4800000, guid: f56eca67093ea0e49aadcc04a32ef4ea, type: 3}
+  - {fileID: 4800000, guid: 3658828144ed46c40907b39f25d20bb8, type: 3}
+  - {fileID: 4800000, guid: fa7c789a22e01d749a0399eec28fc563, type: 3}
+  - {fileID: 4800000, guid: a2f66833c7db34f41be0f5a6666fa1f7, type: 3}
 --- !u!1 &1839300435
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+// 边缘检测：Sobel卷积
 Shader "UI/EdgeSobel"
 {
     Properties

@@ -1,3 +1,4 @@
+// 若_MainTex采样像素为透明则改为对_BgTex采样
 Shader "UI/BlendImage"
 {
     Properties
@@ -15,7 +16,6 @@ Shader "UI/BlendImage"
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag
-            // make fog work
             #pragma multi_compile_fog
 
             #include "UnityCG.cginc"
@@ -47,7 +47,6 @@ Shader "UI/BlendImage"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
                 fixed4 col = tex2D(_MainTex, i.uv);
                 if(col.w == 0){
                     return tex2D(_BgTex, i.uv);
