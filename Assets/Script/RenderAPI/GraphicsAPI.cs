@@ -112,7 +112,7 @@ public class GraphicsAPI : MonoBehaviour
     }
 
     /// <summary>
-    /// »æÖÆÎÆÀíµ½ÆÁÄ»
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä»
     /// </summary>
     void TextureToScreen()
     {
@@ -124,7 +124,7 @@ public class GraphicsAPI : MonoBehaviour
 
     private Rect defeatUVRect = new Rect(0, 0, 1, 1);
     /// <summary>
-    /// ÎÆÀí¿½±´
+    /// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     void TextureCopy()
     {
@@ -166,21 +166,21 @@ public class GraphicsAPI : MonoBehaviour
         tempTexture2D = new Texture2D(Screen.width, Screen.height);
         tempTexture2D2 = new Texture2D(100, 100);
 
-        // CmaeraäÖÈ¾RT
+        // Cmaeraï¿½ï¿½È¾RT
         Camera.main.targetTexture = rt;
         Camera.main.Render();
 
-        // ¶ÁÈ¡RTÊý¾Ý
+        // ï¿½ï¿½È¡RTï¿½ï¿½ï¿½ï¿½
         RenderTexture.active = rt;
         tempTexture2D.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
         tempTexture2D.Apply();
         ChangeTextureSize(rt, tempTexture2D2);
 
-        // Çå¿Õ
+        // ï¿½ï¿½ï¿½
         RenderTexture.active = null;
         Camera.main.targetTexture = null;
 
-        // ÎÆÀíÊý¾Ý
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         var imageData = tempTexture2D.EncodeToPNG();
         var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
