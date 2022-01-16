@@ -1,9 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class GraphicsAPI : MonoBehaviour
 {
@@ -25,7 +23,6 @@ public class GraphicsAPI : MonoBehaviour
 
     void Start()
     {
-        //UINode?.SetActive(true);
         if (UINode) UINode.SetActive(true);
         DataInit();
         // GraphicsStaticObject();
@@ -95,7 +92,6 @@ public class GraphicsAPI : MonoBehaviour
         {
             worldPos[i] = new Vector3(UnityEngine.Random.Range(-20f, 20f), UnityEngine.Random.Range(-20f, 20f), UnityEngine.Random.Range(-20f, 20f));
             worldMats[i] = Matrix4x4.identity;
-            //worldMats[i].SetColumn(3, new Vector4(worldPos[i].x, worldPos[i].y, worldPos[i].z, 1));
             worldMats[i][0, 3] = worldPos[i].x;
             worldMats[i][1, 3] = worldPos[i].y;
             worldMats[i][2, 3] = worldPos[i].z;
@@ -112,7 +108,7 @@ public class GraphicsAPI : MonoBehaviour
     }
 
     /// <summary>
-    /// ������������Ļ
+    /// 渲染纹理到屏幕
     /// </summary>
     void TextureToScreen()
     {
@@ -124,7 +120,7 @@ public class GraphicsAPI : MonoBehaviour
 
     private Rect defeatUVRect = new Rect(0, 0, 1, 1);
     /// <summary>
-    /// ��������
+    /// 纹理拷贝
     /// </summary>
     void TextureCopy()
     {
@@ -166,21 +162,20 @@ public class GraphicsAPI : MonoBehaviour
         tempTexture2D = new Texture2D(Screen.width, Screen.height);
         tempTexture2D2 = new Texture2D(100, 100);
 
-        // Cmaera��ȾRT
+        // Cmaera渲染RT
         Camera.main.targetTexture = rt;
         Camera.main.Render();
 
-        // ��ȡRT����
+        // 读取RT数据
         RenderTexture.active = rt;
         tempTexture2D.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
         tempTexture2D.Apply();
         ChangeTextureSize(rt, tempTexture2D2);
 
-        // ���
         RenderTexture.active = null;
         Camera.main.targetTexture = null;
 
-        // ��������
+        // 保存纹理数据为png
         var imageData = tempTexture2D.EncodeToPNG();
         var path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
