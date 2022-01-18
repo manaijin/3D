@@ -23,18 +23,22 @@ public class GraphicsAPI : MonoBehaviour
 
     void Start()
     {
-        if (UINode) UINode.SetActive(true);
         DataInit();
         // GraphicsStaticObject();
     }
 
-    void Update()
+    private void OnEnable()
     {
+        if (UINode) UINode.SetActive(true);
+    }
+
+    void Update()
+    {       
         if (useGPU)
         {
-            Graphics.DrawMeshInstanced(mesh, 0, meshMat[0], worldMats, meshMat.Length);
-            Graphics.DrawMeshInstanced(mesh, 1, meshMat[1], worldMats, meshMat.Length);
-            Graphics.DrawMeshInstanced(mesh, 2, meshMat[2], worldMats, meshMat.Length);
+            Graphics.DrawMeshInstanced(mesh, 0, meshMat[0], worldMats, worldMats.Length);
+            Graphics.DrawMeshInstanced(mesh, 1, meshMat[1], worldMats, worldMats.Length);
+            Graphics.DrawMeshInstanced(mesh, 2, meshMat[2], worldMats, worldMats.Length);
         }
         else
         {
@@ -53,13 +57,12 @@ public class GraphicsAPI : MonoBehaviour
         {
             // TextureToScreen();
             // TextureCopy();
-            // ShowDifferentResolution();
+            ShowDifferentResolution();
         }
     }
 
     private void OnDisable()
     {
-        //UINode?.SetActive(false);
         if (UINode != null)
             UINode.SetActive(false);
     }
@@ -90,7 +93,7 @@ public class GraphicsAPI : MonoBehaviour
 
         for (int i = 0; i < worldPos.Length; i++)
         {
-            worldPos[i] = new Vector3(UnityEngine.Random.Range(-20f, 20f), UnityEngine.Random.Range(-20f, 20f), UnityEngine.Random.Range(-20f, 20f));
+            worldPos[i] = new Vector3(UnityEngine.Random.Range(-20f, 20f), UnityEngine.Random.Range(-5f, 5f), UnityEngine.Random.Range(-5f, 5f));
             worldMats[i] = Matrix4x4.identity;
             worldMats[i][0, 3] = worldPos[i].x;
             worldMats[i][1, 3] = worldPos[i].y;
