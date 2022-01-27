@@ -1,3 +1,4 @@
+// 3D±ê×¼Ä£°å
 Shader "3D/Sample"
 {
     Properties{

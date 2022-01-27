@@ -1,42 +1,20 @@
-// ªÏ∫œ_MainTex”Î_DiffuseŒ∆¿Ì
-Shader "3D/Blender"
+Shader "3D/Custom1"
 {
     Properties
     {
-        _MainTex("Base 2D", 2D) = "white"{}
-        _Diffuse("Diffuse", Color) = (1,1,1,1)        
-        _CutOff("CutOff", float) = 1
+        _Diffuse("Diffuse", Color) = (1,1,1,1)
     }
 
     SubShader
     {
-        Tags
-        {
-            "Queue" = "Transparent"
-            "IgnoreProjector" = "True"
-            "RenderType" = "Opaque"
-            "PreviewType" = "Plane"
-            "CanUseSpriteAtlas" = "True"
-        }
-
         Pass
         {
-            Tags { "LightMode" = "ForwardBase" }
-            ZWrite Off
-            Blend SrcAlpha OneMinusSrcAlpha
-
-            Stencil{
-                ref 1
-                Comp NotEqual
-                Pass Replace
-            }
-
             CGPROGRAM
             #include "Lighting.cginc"
 
-            float4 _MainTex_ST;
             fixed4 _Diffuse;
-            sampler2D _MainTex;
+            sampler2D AfterOpaqueTexture;
+            float4 AfterOpaqueTexture_ST;
 
             struct v2f
             {
@@ -49,7 +27,7 @@ Shader "3D/Blender"
             {
                 v2f o;
                 o.pos = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.texcoord, _MainTex);
+                o.uv = TRANSFORM_TEX(v.texcoord, AfterOpaqueTexture);
                 o.worldNormal = mul(v.normal, (float3x3)unity_WorldToObject);
                 return o;
             }
@@ -61,11 +39,9 @@ Shader "3D/Blender"
                 fixed3 worldLightDir = normalize(_WorldSpaceLightPos0.xyz);
                 fixed3 lambert = 0.5 * dot(worldNormal, worldLightDir) + 0.5;
                 fixed3 diffuse = lambert * _Diffuse.xyz * _LightColor0.xyz + ambient;
-                fixed4 color = tex2D(_MainTex, i.uv);
+                fixed4 color = tex2D(AfterOpaqueTexture, i.uv);
                 color.rgb = color.rgb * diffuse;
-                // color.rgb = fixed3(1.0, 1.0, 1.0);
-                color.a = _Diffuse.w;
-                return color;
+                return fixed4(color);
             }
 
             #pragma vertex vert
@@ -73,5 +49,5 @@ Shader "3D/Blender"
             ENDCG
         }
     }
-        FallBack "Diffuse"
+    FallBack "Diffuse"
 }
