@@ -15,6 +15,7 @@ Shader "3D/Custom1"
             fixed4 _Diffuse;
             sampler2D AfterOpaqueTexture;
             float4 AfterOpaqueTexture_ST;
+            float4 AfterOpaqueTexture_TexelSize;
 
             struct v2f
             {
@@ -29,6 +30,10 @@ Shader "3D/Custom1"
                 o.pos = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.texcoord, AfterOpaqueTexture);
                 o.worldNormal = mul(v.normal, (float3x3)unity_WorldToObject);
+#if UNITY_UV_STARTS_AT_TOP
+                if (AfterOpaqueTexture_TexelSize.y < 0.0)
+                    o.uv.y = 1.0 - o.uv.y;
+#endif
                 return o;
             }
 

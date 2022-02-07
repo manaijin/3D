@@ -4,7 +4,6 @@ Shader "3D/PureColor"
     {
         Pass
         {
-            //·µ»ØÀ¶É«  
             Color(0,0,0,1)
         }
     }
