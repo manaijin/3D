@@ -4,7 +4,8 @@ Shader "Unlit/Blue"
     {
         _MainTex("Texture", 2D) = "white" {}
     }
-        SubShader
+
+    SubShader
     {
         Tags { "RenderType" = "Opaque" }
         LOD 100
