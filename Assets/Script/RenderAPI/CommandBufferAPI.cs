@@ -5,58 +5,61 @@ using UnityEngine.Rendering;
 
 public class CommandBufferAPI : MonoBehaviour
 {
-    public Material pureColor;
+    public Material MRT;
+    public Mesh mesh;
 
     private CommandBuffer buffer1;
     private CommandBuffer buffer2;
     private CommandBuffer buffer3;
     private CommandBuffer buffer4;
-    private int pro1;
-    private int pro2;
-    private int pro3;
 
     private RenderTexture r1;
     private RenderTexture r2;
+    private RenderTargetIdentifier[] mrt;
+
+    private RenderTexture r3;
+    private RenderTexture r4;
+    private RenderTargetIdentifier[] mrt2;
 
     void Start()
     {
-        pro1 = Shader.PropertyToID("tempProperty1");
-        pro2 = Shader.PropertyToID("tempProperty20");
-        pro3 = Shader.PropertyToID("tempProperty30");
-
-        buffer1 = new CommandBuffer() { name = "AfterSkybox" };
-        Camera.main.AddCommandBuffer(CameraEvent.AfterSkybox, buffer1);
-
-        buffer2 = new CommandBuffer() { name = "AfterImageEffects" };
-        Camera.main.AddCommandBuffer(CameraEvent.AfterImageEffects, buffer2);
-
-        //buffer3 = new CommandBuffer() { name = "BeforeSkybox" };
-        //Camera.main.AddCommandBuffer(CameraEvent.BeforeSkybox, buffer3);
-
-        //buffer4 = new CommandBuffer() { name = "BeforeImageEffects" };
-        //Camera.main.AddCommandBuffer(CameraEvent.BeforeImageEffects, buffer4);
-
         r1 = RenderTexture.GetTemporary((int)Screen.width, (int)Screen.height);
         r2 = RenderTexture.GetTemporary((int)Screen.width, (int)Screen.height);
+        mrt = new RenderTargetIdentifier[] { r1.colorBuffer, r2.colorBuffer };
+
+        r3 = RenderTexture.GetTemporary((int)Screen.width, (int)Screen.height);
+        r4 = RenderTexture.GetTemporary((int)Screen.width, (int)Screen.height);
+        mrt2 = new RenderTargetIdentifier[] { r3.colorBuffer, r4.colorBuffer };
 
         Shader.SetGlobalTexture("AfterOpaqueTexture", r1);
         Shader.SetGlobalTexture("AfterAllTexture", r2);
+
+        Shader.SetGlobalTexture("AfterOpaqueTexture2", r3);
+        Shader.SetGlobalTexture("AfterAllTexture2", r4);
+
+        var mt = Matrix4x4.TRS(Vector3.zero, Quaternion.identity, Vector3.one * 10);
+
+        buffer1 = new CommandBuffer() { name = "AfterSkybox" };        
+        buffer1.Blit(BuiltinRenderTextureType.CameraTarget, r1);
+        buffer1.Blit(BuiltinRenderTextureType.CameraTarget, r2);
+        buffer1.SetRenderTarget(mrt, r1.depthBuffer);
+        buffer1.DrawMesh(mesh, mt, MRT);
+        Camera.main.AddCommandBuffer(CameraEvent.AfterSkybox, buffer1);
+
+        buffer2 = new CommandBuffer() { name = "AfterImageEffects" };
+        buffer2.Blit(BuiltinRenderTextureType.CameraTarget, r3);
+        buffer2.Blit(BuiltinRenderTextureType.CameraTarget, r4);
+        buffer2.SetRenderTarget(mrt2, r3.depthBuffer);
+        buffer2.DrawMesh(mesh, mt, MRT);
+        Camera.main.AddCommandBuffer(CameraEvent.AfterImageEffects, buffer2);
     }
 
-    void Update()
-    {
-        buffer1.Clear();
-        buffer2.Clear();
-        //buffer3.Clear();
-        //buffer4.Clear();
 
-        //buffer3.Blit(null, r1, pureColor);
-        buffer1.Blit(BuiltinRenderTextureType.CurrentActive, r1);
-
-        //buffer4.Blit(null, r2, pureColor);
-        buffer2.Blit(BuiltinRenderTextureType.CurrentActive, r2);
-    }
-
+    //void OnRenderImage(RenderTexture source, RenderTexture destination)
+    //{
+    //    Graphics.Blit(source, destination);
+    //    Graphics.Blit(source, r1, MRT);
+    //}
 
     private void OnDisable()
     {
@@ -94,6 +97,18 @@ public class CommandBufferAPI : MonoBehaviour
         {
             RenderTexture.ReleaseTemporary(r2);
             r2 = null;
+        }
+
+        if (r3)
+        {
+            RenderTexture.ReleaseTemporary(r3);
+            r3 = null;
+        }
+
+        if (r4)
+        {
+            RenderTexture.ReleaseTemporary(r4);
+            r4 = null;
         }
     }
 }
