@@ -10,8 +10,6 @@ public class CommandBufferAPI : MonoBehaviour
 
     private CommandBuffer buffer1;
     private CommandBuffer buffer2;
-    private CommandBuffer buffer3;
-    private CommandBuffer buffer4;
 
     private RenderTexture r1;
     private RenderTexture r2;
@@ -21,7 +19,7 @@ public class CommandBufferAPI : MonoBehaviour
     private RenderTexture r4;
     private RenderTargetIdentifier[] mrt2;
 
-    void Start()
+    void OnEnable()
     {
         r1 = RenderTexture.GetTemporary((int)Screen.width, (int)Screen.height);
         r2 = RenderTexture.GetTemporary((int)Screen.width, (int)Screen.height);
@@ -46,20 +44,13 @@ public class CommandBufferAPI : MonoBehaviour
         buffer1.DrawMesh(mesh, mt, MRT);
         Camera.main.AddCommandBuffer(CameraEvent.AfterSkybox, buffer1);
 
-        buffer2 = new CommandBuffer() { name = "AfterImageEffects" };
+        buffer2 = new CommandBuffer() { name = "BeforeImageEffects" };
         buffer2.Blit(BuiltinRenderTextureType.CameraTarget, r3);
         buffer2.Blit(BuiltinRenderTextureType.CameraTarget, r4);
         buffer2.SetRenderTarget(mrt2, r3.depthBuffer);
         buffer2.DrawMesh(mesh, mt, MRT);
-        Camera.main.AddCommandBuffer(CameraEvent.AfterImageEffects, buffer2);
+        Camera.main.AddCommandBuffer(CameraEvent.BeforeImageEffects, buffer2);
     }
-
-
-    //void OnRenderImage(RenderTexture source, RenderTexture destination)
-    //{
-    //    Graphics.Blit(source, destination);
-    //    Graphics.Blit(source, r1, MRT);
-    //}
 
     private void OnDisable()
     {
