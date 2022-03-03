@@ -44,5 +44,6 @@ public class CustomUIMesh : Image
         {
             vh.AddTriangle(0, i, i + 1);
         }
+        vh.AddTriangle(splitNum, 0, 1);
     }
 }
